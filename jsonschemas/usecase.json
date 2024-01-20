@@ -1,0 +1,109 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/Otyg/requirementsengineering/main/jsonschemas/usecase.json",
+    "title": "Use Case",
+    "description": "A use case",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "Unique ID of the use case",
+            "type": "string"
+        },
+        "name": {
+            "description": "The name of the use case",
+            "type": "string"
+        },
+        "actors": {
+            "description": "Roles and/or personas acting in the usecase",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "uniqueItems": true
+        },
+        "objective": {
+            "description": "The main objective of the use case",
+            "type": "string"
+        },
+        "preconditions": {
+            "description": "Preconditions for the use case",
+            "type": "string"
+        },
+        "postconditions": {
+            "description": "Postconditions when the use case is finished",
+            "type": "string"
+        },
+        "steps": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "actor": {
+                        "description": "Actor that performs the step",
+                        "type": "string"
+                    },
+                    "step": {
+                        "description": "Description of the step",
+                        "type": "string"
+                    },
+                    "alternative_steps":{
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "step": {
+                                    "description": "Description of the step",
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["id", "step"]
+                        }
+                    },
+                    "error_steps": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "step": {
+                                    "description": "Description of the step",
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["id", "step"]
+                        }
+                    },
+                    "required": ["id", "step"]
+                }
+            },
+            "minItems": 1
+        },
+        "relations": {
+            "description": "Relations to other use cases",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id of the related use case"
+                    },
+                    "relation_type": {
+                        "type": "string",
+                        "enum": ["include", "extend", "generalize"]
+                    }
+                }
+            }
+        },
+        "required": ["id", "name", "objective", "steps"]
+    }
+}
+    
