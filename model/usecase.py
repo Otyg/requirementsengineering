@@ -1,6 +1,7 @@
 from typing import List
 from typing import Any
 from dataclasses import dataclass
+from dataclasses import asdict
 import json
 @dataclass
 class AlternativeStep:
@@ -36,29 +37,6 @@ class Relation:
         return Relation(_id, _relation_type)
 
 @dataclass
-class Root:
-    id: str
-    name: str
-    actors: List[str]
-    objective: str
-    preconditions: str
-    postconditions: str
-    steps: List[Step]
-    relations: List[Relation]
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Root':
-        _id = str(obj.get("id"))
-        _name = str(obj.get("name"))
-        _actors = [str(y) for y in obj.get("actors")]
-        _objective = str(obj.get("objective"))
-        _preconditions = str(obj.get("preconditions"))
-        _postconditions = str(obj.get("postconditions"))
-        _steps = [Step.from_dict(y) for y in obj.get("steps")]
-        _relations = [Relation.from_dict(y) for y in obj.get("relations")]
-        return Root(_id, _name, _actors, _objective, _preconditions, _postconditions, _steps, _relations)
-
-@dataclass
 class Step:
     id: int
     actor: str
@@ -75,6 +53,29 @@ class Step:
         _error_steps = [ErrorStep.from_dict(y) for y in obj.get("error_steps")]
         return Step(_id, _actor, _step, _alternative_steps, _error_steps)
 
-# Example Usage
-# jsonstring = json.loads(myjsonstring)
-# root = Root.from_dict(jsonstring)
+@dataclass
+class UseCase:
+    id: str
+    name: str
+    actors: List[str]
+    objective: str
+    preconditions: str
+    postconditions: str
+    steps: List[Step]
+    relations: List[Relation]
+
+    @staticmethod
+    def to_dict(obj: Any) -> 'dict':
+        return {k: v for k, v in asdict(obj).items()}
+
+    @staticmethod
+    def from_dict(obj: Any) -> 'UseCase':
+        _id = str(obj.get("id"))
+        _name = str(obj.get("name"))
+        _actors = [str(y) for y in obj.get("actors")]
+        _objective = str(obj.get("objective"))
+        _preconditions = str(obj.get("preconditions"))
+        _postconditions = str(obj.get("postconditions"))
+        _steps = [Step.from_dict(y) for y in obj.get("steps")]
+        _relations = [Relation.from_dict(y) for y in obj.get("relations")]
+        return UseCase(_id, _name, _actors, _objective, _preconditions, _postconditions, _steps, _relations)
